@@ -10,10 +10,14 @@ export default {
   ],
   theme: {
   	extend: {
-		fontFamily: {
-			mono:['var(--font-geist-mono)'],
-			sans:['var(--font-geist-sans)'],
-		},
+  		fontFamily: {
+  			mono: [
+  				'var(--font-geist-mono)'
+  			],
+  			sans: [
+  				'var(--font-geist-sans)'
+  			]
+  		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
