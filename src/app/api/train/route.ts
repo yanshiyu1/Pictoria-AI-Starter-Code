@@ -7,6 +7,9 @@ const replicate = new Replicate({
   auth: process.env.REPLICATE_API_TOKEN,
 });
 
+const WEBHOOK_URL =
+  process.env.SITE_URL ?? "https://1ac40d90b1f9.ngrok-free.app";
+
 export async function POST(request: NextRequest) {
   try {
     if (!process.env.REPLICATE_API_TOKEN) {
@@ -77,10 +80,24 @@ export async function POST(request: NextRequest) {
           input_images: fileUrl.signedUrl,
           trigger_word: "ohwx",
         },
+        webhook: `${WEBHOOK_URL}/api/webhook/training`,
+        webhook_events_filter: ["completed"], // optional
       }
     );
 
-    console.log(training);
+    // add model values in the supabase
+    await supabaseAdmin.from("models").insert({
+      model_id: modelId,
+      user_id: user.id,
+      model_name: input.modelName,
+      gender: input.gender,
+      training_status: training.status,
+      trigger_word: "ohwx",
+      training_steps: 1200,
+      training_id: training.id,
+    });
+
+    //console.log(training);
 
     return NextResponse.json(
       {
